@@ -106,3 +106,84 @@ Hash value of the 2nd account (hashvalue3): b311789a666d0e33bbd5704c84ace08cfd32
 Comparison of hashvalue1 and hashvalue2 (Are they identical?): identical
 Comparison of hashvalue1 and hashvalue3 (Are they identical?): not identical
 """
+
+# ==============================================================================
+# Task C1: Create Blockchain Block and Chain
+# ==============================================================================
+"""
+This section defines functions to create a dictionary of a block and append it to a blockchain.
+"""
+
+# Function to create a dictionary of a block
+def create_block(block_index, transaction_data, proof_of_work, previous_hash):
+    """
+    Creates a dictionary representing a block in the blockchain.
+    :param block_index: The index of the block in the chain.
+    :param transaction_data: The data related to the transaction.
+    :param proof_of_work: The proof of work for the block.
+    :param previous_hash: The hash of the previous block in the chain.
+    :return: A dictionary representing the block.
+    """
+    transaction_timestamp = datetime.datetime.now().isoformat()  # Current timestamp
+    return {
+        'block_index': block_index,
+        'transaction_timestamp': transaction_timestamp,
+        'transaction_data': transaction_data,
+        'proof_of_work': proof_of_work,
+        'previous_hash': previous_hash
+    }
+
+# Function to append the dictionary of a block to the chain
+def create_chain(block):
+    """
+    Appends the dictionary of a block to the chain.
+    :param block: The block to be appended to the chain.
+    :return: The updated chain with the new block.
+    """
+    chain.append(block)  # Append the block to the global chain
+    return chain
+
+# Example usage of create_block and create_chain functions
+# Initialize an empty list to represent the blockchain
+chain = []
+
+# Create a sample block and add it to the chain
+sample_block = create_block(1, "Sample transaction data", 1234, "0"*64)  # Genesis block previous hash is often represented by 64 zeros
+updated_chain = create_chain(sample_block)
+
+print(updated_chain)  # Display the updated chain with the sample block
+
+
+"""
+# Paste output here
+[{'block_index': 1, 'transaction_timestamp': '2023-11-25T11:27:12.974337', 'transaction_data': 'Sample transaction data', 'proof_of_work': 1234, 'previous_hash': '0000000000000000000000000000000000000000000000000000000000000000'}]
+"""
+
+# ==============================================================================
+# Task C2: Create Genesis Block
+# ==============================================================================
+"""
+This section creates the genesis block, which is the first block in the blockchain.
+The genesis block is unique as it does not reference a previous block.
+"""
+
+genesis_previous_hash = _hashlib.sha256("000".encode()).hexdigest()
+
+# Create the genesis block
+genesis_block = create_block(
+    block_index=1,
+    transaction_data="This is the genesis block of account data access transactional record.",
+    proof_of_work=1,
+    previous_hash=genesis_previous_hash
+)
+
+# Reset and append the genesis block to the chain
+chain = []  # Resetting the chain for clarity
+genesis_chain = create_chain(genesis_block)
+
+print(genesis_chain)  # Display the chain with the genesis block
+
+"""
+# Paste output here
+[{'block_index': 1, 'transaction_timestamp': '2023-11-25T11:27:12.974337', 'transaction_data': 'This is the genesis block of account data access transactional record.', 'proof_of_work': 1, 'previous_hash': '2ac9a6746aca543af8dff39894cfe8173afba21eb01c6fae33d52947222855ef'}]
+"""
